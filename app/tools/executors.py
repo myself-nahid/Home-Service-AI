@@ -1,15 +1,25 @@
-from app.clients.backend_client import trigger_backend_action
-from app.core.config import settings
-
 async def execute_tool(tool_name: str, arguments: dict) -> str:
+    """MOCKED Tool Executor"""
+    
+    # Customer Tools
     if tool_name == "calculate_quote":
-        # Calls the Pricing Microservice
-        res = await trigger_backend_action(settings.PRICING_SERVICE_URL, "api/pricing/calculate", arguments)
-        return f"Quote generated: Max price is ${res['total_price']} for {res['estimated_hours']} hours."
-    
+        return "Backend Success: Quote is $358."
+        
+    # Cleaner Tools
     elif tool_name == "request_time_extension":
-        # Calls the CRM microservice to pause the job and text the customer
-        res = await trigger_backend_action(settings.CRM_SERVICE_URL, "api/jobs/extend", arguments)
-        return "Extension requested. The customer has been texted for approval. I will notify you when they reply."
+        mins = arguments.get("extra_minutes")
+        return f"Backend Success: Requested {mins} extra mins. Customer has been texted for approval."
     
-    return "Tool not found."
+    elif tool_name == "get_daily_schedule":
+        return "Backend Success: 1. 10AM (Smith House) 2. 3PM (Martinez House)"
+        
+    # Manager Tools
+    elif tool_name == "request_property_setup":
+        addr = arguments.get("address")
+        return f"Backend Success: Admin team notified to setup {addr} and link calendar."
+        
+    # Admin Tools
+    elif tool_name == "reassign_cleaner":
+        return "Backend Success: Job reassigned successfully."
+    
+    return f"Error: Tool '{tool_name}' not recognized."

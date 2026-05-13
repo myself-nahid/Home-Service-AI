@@ -1,5 +1,6 @@
 TOOLS_BY_ROLE = {
-    "residential_customer":[
+    # 1. CUSTOMER TOOLS
+    "customer":[
         {
             "type": "function",
             "function": {
@@ -17,7 +18,9 @@ TOOLS_BY_ROLE = {
             }
         }
     ],
-    "worker":[
+    
+    # 2. CLEANER TOOLS
+    "cleaner":[
         {
             "type": "function",
             "function": {
@@ -26,10 +29,54 @@ TOOLS_BY_ROLE = {
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "job_id": {"type": "string"},
-                        "extra_minutes": {"type": "integer"}
+                        "extra_minutes": {"type": "integer"},
+                        "reason": {"type": "string"}
                     },
-                    "required": ["job_id", "extra_minutes"]
+                    "required": ["extra_minutes", "reason"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "get_daily_schedule",
+                "description": "Fetches the cleaner's jobs for the day."
+            }
+        }
+    ],
+    
+    # 3. MANAGER TOOLS
+    "manager":[
+        {
+            "type": "function",
+            "function": {
+                "name": "request_property_setup",
+                "description": "Initiates the onboarding process for a new property to be managed.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "address": {"type": "string"}
+                    },
+                    "required": ["address"]
+                }
+            }
+        }
+    ],
+    
+    # 4. ADMIN TOOLS
+    "admin":[
+        {
+            "type": "function",
+            "function": {
+                "name": "reassign_cleaner",
+                "description": "Forces a reassignment of a job to a different cleaner.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "job_id": {"type": "string"},
+                        "new_cleaner_id": {"type": "string"}
+                    },
+                    "required": ["job_id", "new_cleaner_id"]
                 }
             }
         }
